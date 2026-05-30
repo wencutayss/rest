@@ -1,11 +1,12 @@
 # eCommerce Microservices - JIRA Stories & Roadmap
 ## Story Points-Based Development Plan
 
-**Document Version**: 1.0  
-**Date**: May 13, 2026  
-**Total Project Story Points**: ~850 SP  
-**Estimated Duration**: 20 Weeks (10 points/week)  
-**Sprint Duration**: 2 weeks (20 points/sprint)
+**Document Version**: 2.0  
+**Date**: May 21, 2026  
+**Total Project Story Points**: ~1,145 SP  
+**Estimated Duration**: 29 Weeks (40 points/week average with buffers)  
+**Sprint Duration**: 2 weeks (average 65 points/sprint)
+**AWS Account**: Free tier with 6 months free resources
 
 ---
 
@@ -21,6 +22,8 @@
 9. [Phase 8: Testing & Quality Assurance (Week 18)](#phase-8-testing--quality-assurance-week-18)
 10. [Phase 9: CI/CD Pipeline (Week 19)](#phase-9-cicd-pipeline-week-19)
 11. [Phase 10: Production Deployment (Week 20)](#phase-10-production-deployment-week-20)
+12. [Phase 11: AWS Infrastructure & Cloud Migration (Weeks 21-26)](#phase-11-aws-infrastructure--cloud-migration-weeks-21-26)
+13. [Phase 12: React UI Development with TypeScript (Weeks 27-33)](#phase-12-react-ui-development-with-typescript-weeks-27-33)
 
 ---
 
@@ -3391,78 +3394,1871 @@ Runbooks Cover:
 | Phase 8: Testing | 75 | Unit tests, Integration tests, E2E tests, Load testing |
 | Phase 9: CI/CD | 55 | GitHub Actions, Code quality, Security scanning, Auto-deployment |
 | Phase 10: Production | 85 | Multi-cluster EKS, Monitoring, Cutover, Runbooks |
-| **TOTAL** | **~850 SP** | **Complete microservices platform** |
+| **PHASE 11: AWS Infrastructure** | **120** | **IAM, VPC, EC2, RDS, S3, ECR, ECS, ALB, Auto Scaling, CloudFront, Route 53, HTTPS** |
+| **PHASE 12: React UI** | **155** | **Frontend app, Components, Pages, State Management, API Integration, Testing, Deployment** |
+| **TOTAL** | **~1320 SP** | **Complete microservices platform with AWS cloud and modern UI** |
 
 ---
 
-## Sprint Planning Summary
-
-**Total Sprints**: 10 x 2-week sprints = 20 weeks  
-**Average Sprint Velocity**: 85 SP per sprint  
-**Team Size**: 5-7 Backend developers + 1-2 DevOps + 1-2 QA  
-
-### Sprint Allocation:
-
-| Sprint | Weeks | Focus Areas | Est. SP |
-|--------|-------|-----|----------|
-| Sprint 1-2 | 1-4 | Foundation (Eureka, Config, Gateway, DBs) | 89 |
-| Sprint 3-4 | 5-8 | Core Services Phase 1 (User, Product) | 60 |
-| Sprint 5-6 | 9-12 | Core Services Phase 2 (Cart, Inventory) | 56 |
-| Sprint 7-8 | 13-16 | Business Services Phase 1 (Order, Payment) | 72 |
-| Sprint 9-10 | 17-20 | Business Services Phase 2 (Notification, Review, Shipping, Saga) | 68 |
-| Sprint 11-12 | 21-24 | Resilience & Features (Circuit breaker, Feign, Caching) | 68 |
-| Sprint 13 | 25-26 | Security (JWT, RBAC) | 40 |
-| Sprint 14 | 27-28 | Observability (Prometheus, Grafana, Zipkin, Splunk) | 50 |
-| Sprint 15 | 29-30 | Containerization (Docker, K8s, Helm) | 65 |
-| Sprint 16 | 31-32 | Testing (Unit, Integration, E2E, Load, Security) | 75 |
-| Sprint 17 | 33-34 | CI/CD Pipeline | 55 |
-| Sprint 18-19 | 35-38 | Production Setup & Deployment | 85 |
+# PHASE 11: AWS INFRASTRUCTURE & CLOUD MIGRATION (Weeks 21-26)
+**Total Story Points: 140 SP**
+**Priority: CRITICAL**
+**AWS Services: Free Tier Available for 6 Months**
 
 ---
 
-## Critical Dependencies & Blockers
-
-### High-Risk Dependencies:
-1. **Database Schema** (all services depend on STORY-1.2.1)
-2. **JWT Authentication** (required for all APIs by STORY-5.1.1)
-3. **API Gateway** (required for service routing by STORY-1.1.5)  
-4. **Eureka Server** (required for all services to register by STORY-1.1.3)
-5. **Config Server** (required for dynamic configuration by STORY-1.1.4)
-
-### Mitigation:
-- Start Phase 1 dependencies in Sprint 1 immediately
-- Run Phases 2-3 in parallel where possible (different services)
-- Buffer time in Phase 8-9 for fixing issues discovered in testing
-- Maintain 10-15% contingency in overall timeline
+## EPIC-11.1: AWS Foundation & Network Setup
+**Epic Story Points: 40 SP**
 
 ---
 
-## Definition of Done (For Each Story)
+### STORY-11.1.1: Setup AWS Account with IAM Roles & Policies
+**Story Points**: 8  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps / Cloud Architect  
+**Sprint**: Sprint 21  
 
-✅ **Code Complete**
-- Code written following project conventions
-- Code committed to Git
-- Code reviewed and approved
+**Description**:
+Configure AWS free tier account with proper IAM roles, policies, and MFA for security best practices.
 
-✅ **Testing Complete**
-- Unit tests pass (>80% coverage where applicable)
-- Integration tests pass
-- No sonar critical/blocker issues
+**Acceptance Criteria**:
+- [ ] AWS account configured with MFA enabled on root account
+- [ ] IAM users created for development team members
+- [ ] Service roles created for EC2, ECS, RDS, Lambda
+- [ ] Least-privilege IAM policies defined
+- [ ] Cross-service permissions configured
+- [ ] Resource tagging strategy defined
+- [ ] CloudTrail enabled for audit logging
+- [ ] Cost monitoring alerts configured
+- [ ] Free tier resources tracked
+- [ ] AWS CLI configured locally
+- [ ] Terraform/CloudFormation IAM roles ready
+- [ ] Documentation updated
 
-✅ **Documentation Complete**
-- API swagger documentation updated
-- Code comments added where needed
-- Architecture documentation updated
+**Technical Details**:
+```
+IAM Structure:
+- Root Account: MFA only, no keys
+- Admin User: Limited permissions for team lead
+- Developer Users: Service-specific access
+- Service Roles: EC2, ECS, Lambda, RDS
+- Policy-based access control (least privilege)
+```
 
-✅ **Deployment Ready**
-- Docker image builds successfully
-- Kubernetes manifests updated
-- Configuration files prepared
+**Subtasks**:
+1. Create AWS account (free tier)
+2. Enable MFA on root account
+3. Create IAM users for developers
+4. Create service roles (EC2, ECS, RDS, Lambda)
+5. Define IAM policies
+6. Configure AWS CLI access
+7. Setup cost monitoring
+8. Enable CloudTrail
+9. Document access procedures
 
-✅ **QA Sign-off**
-- Manual testing passed
-- No critical bugs
-- Performance acceptable
+**Dependencies**: None
+
+---
+
+### STORY-11.1.2: Design & Setup VPC with Subnets, Security Groups, NACLs
+**Story Points**: 12  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps / Network Engineer  
+**Sprint**: Sprint 21  
+
+**Description**:
+Create VPC architecture with public/private subnets, internet gateway, NAT gateway, and security controls.
+
+**Acceptance Criteria**:
+- [ ] VPC created (CIDR: 10.0.0.0/16)
+- [ ] 2 Public subnets (Web tier, 10.0.1.0/24, 10.0.2.0/24)
+- [ ] 2 Private subnets (App tier, 10.0.10.0/24, 10.0.11.0/24)
+- [ ] 2 Private subnets (DB tier, 10.0.20.0/24, 10.0.21.0/24)
+- [ ] Internet Gateway attached and configured
+- [ ] NAT Gateway in public subnet for private subnet egress
+- [ ] Route tables configured (public and private)
+- [ ] Security groups created: ALB-SG, App-SG, DB-SG
+- [ ] NACLs configured for inbound/outbound rules
+- [ ] VPC Flow Logs enabled
+- [ ] VPC Endpoints configured (for AWS services)
+- [ ] Multi-AZ setup for high availability
+- [ ] Terraform/CloudFormation code created
+- [ ] Tested and documented
+
+**Technical Details**:
+```
+VPC Architecture:
+- CIDR Block: 10.0.0.0/16
+- Public Subnets: 10.0.1.0/24, 10.0.2.0/24 (Multi-AZ)
+- App Subnets: 10.0.10.0/24, 10.0.11.0/24 (Multi-AZ)
+- DB Subnets: 10.0.20.0/24, 10.0.21.0/24 (Multi-AZ)
+- NAT Gateway: In public subnet for private egress
+- Security Groups: Separate for each tier
+```
+
+**Subtasks**:
+1. Create VPC with CIDR 10.0.0.0/16
+2. Create public subnets (2 AZs)
+3. Create private subnets for app tier (2 AZs)
+4. Create private subnets for database tier (2 AZs)
+5. Create Internet Gateway
+6. Create NAT Gateway
+7. Create and configure route tables
+8. Create security groups for each tier
+9. Configure NACLs
+10. Enable VPC Flow Logs
+11. Create Terraform/CloudFormation templates
+12. Document network architecture
+
+**Dependencies**: STORY-11.1.1
+
+---
+
+### STORY-11.1.3: Setup RDS Multi-AZ PostgreSQL Database
+**Story Points**: 10  
+**Priority**: CRITICAL  
+**Assignee Type**: Database Administrator / DevOps  
+**Sprint**: Sprint 21  
+
+**Description**:
+Create managed RDS PostgreSQL instance with Multi-AZ for high availability and automated backups.
+
+**Acceptance Criteria**:
+- [ ] RDS PostgreSQL 16 instance created (Multi-AZ)
+- [ ] Database endpoint configured
+- [ ] Enhanced monitoring enabled
+- [ ] Automated backups configured (7-day retention)
+- [ ] Manual snapshot capability
+- [ ] Parameter groups configured (max_connections, shared_buffers)
+- [ ] Subnet group created in private subnets
+- [ ] DB security group configured
+- [ ] Encryption at rest enabled
+- [ ] Encryption in transit (SSL) enabled
+- [ ] CloudWatch monitoring and alarms
+- [ ] Read replicas configured (optional for scaling)
+- [ ] Performance Insights enabled
+- [ ] Failover behavior tested
+- [ ] Connection pooling setup (via microservices)
+- [ ] Free tier instance type (db.t3.micro or db.t4g.micro)
+
+**Technical Details**:
+```
+RDS Configuration:
+- Engine: PostgreSQL 16
+- Instance Class: db.t4g.micro (free tier eligible)
+- Multi-AZ: Enabled
+- Storage: 20 GB (free tier limit)
+- Backup Retention: 7 days
+- Encryption: AES-256 at rest, SSL in transit
+- Monitoring: Enhanced monitoring every 60 seconds
+- Parameter Groups: Optimized for microservices
+```
+
+**Subtasks**:
+1. Create RDS subnet group (private subnets)
+2. Create DB security group
+3. Create RDS PostgreSQL instance
+4. Enable Multi-AZ
+5. Configure automated backups
+6. Enable encryption at rest and in transit
+7. Setup CloudWatch alarms
+8. Enable Performance Insights
+9. Create read replica (optional)
+10. Test failover
+11. Document connection procedures
+12. Create parameter backup/restore procedures
+
+**Dependencies**: STORY-11.1.2
+
+---
+
+### STORY-11.1.4: Setup S3 Buckets for Media & Backups
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 21  
+
+**Description**:
+Create S3 buckets for product images, user uploads, and database backups with lifecycle policies.
+
+**Acceptance Criteria**:
+- [ ] S3 bucket for product images created
+- [ ] S3 bucket for user uploads created
+- [ ] S3 bucket for database backups created
+- [ ] Bucket versioning enabled
+- [ ] Server-side encryption (SSE-S3) configured
+- [ ] Public access blocked (except images via CloudFront)
+- [ ] Lifecycle policies for old versions (delete after 30 days)
+- [ ] Cross-region replication (optional for critical backups)
+- [ ] IAM policies for service access
+- [ ] CloudFront OAI configured for image delivery
+- [ ] Bucket logging enabled
+- [ ] Access logs stored in separate bucket
+- [ ] Intelligent-Tiering enabled for cost optimization
+- [ ] Free tier limits monitored
+
+**Technical Details**:
+```
+S3 Buckets:
+1. ecommerce-images (product images)
+   - Public access via CloudFront OAI only
+   - Object lock for audit compliance
+   
+2. ecommerce-uploads (user uploads)
+   - Private access via signed URLs
+   - Virus scanning via Lambda (optional)
+   
+3. ecommerce-backups (database/logs)
+   - Private, versioned
+   - Lifecycle: Move to Glacier after 30 days
+```
+
+**Subtasks**:
+1. Create S3 bucket for images
+2. Create S3 bucket for uploads
+3. Create S3 bucket for backups
+4. Enable versioning
+5. Configure encryption
+6. Setup lifecycle policies
+7. Configure access control and IAM
+8. Setup CloudFront OAI for images
+9. Enable bucket logging
+10. Configure backup lifecycle
+11. Test access patterns
+12. Document bucket policies
+
+**Dependencies**: STORY-11.1.1
+
+---
+
+## EPIC-11.2: Container Registry & Container Orchestration
+**Epic Story Points: 35 SP**
+
+---
+
+### STORY-11.2.1: Setup Amazon ECR (Elastic Container Registry)
+**Story Points**: 8  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 22  
+
+**Description**:
+Create private ECR repositories for each microservice Docker image.
+
+**Acceptance Criteria**:
+- [ ] ECR repositories created for all 11 services
+- [ ] Image scanning on push enabled
+- [ ] Lifecycle policies configured (keep last 10 images)
+- [ ] IAM policies for ECS/Lambda access
+- [ ] Image tag format defined (latest, version, git-sha)
+- [ ] Access logging enabled
+- [ ] Encryption configured
+- [ ] Registry cleanup automation via Lambda
+- [ ] Docker authentication configured locally
+- [ ] CI/CD pipeline configured for image push
+- [ ] Image pull secrets created for ECS
+
+**Technical Details**:
+```
+ECR Repositories:
+- user-service
+- product-service
+- cart-service
+- order-service
+- payment-service
+- inventory-service
+- notification-service
+- review-service
+- shipping-service
+- saga-orchestrator
+- api-gateway
+
+Image Tagging: {service}:{version}-{gitsha}
+Retention: Keep 10 latest images
+Scanning: AWS native scanning enabled
+```
+
+**Subtasks**:
+1. Create ECR repositories for each service
+2. Configure image scanning
+3. Setup lifecycle policies
+4. Configure IAM roles for ECS/Lambda
+5. Configure image push via CI/CD
+6. Setup Docker authentication
+7. Configure image pull secrets
+8. Test image push and pull
+9. Document ECR access procedures
+10. Setup image scanning notifications
+
+**Dependencies**: STORY-11.1.1, Phase 7 Docker images
+
+---
+
+### STORY-11.2.2: Setup ECS Cluster with EC2 Launch Type
+**Story Points**: 15  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 22  
+
+**Description**:
+Create ECS cluster with EC2 launch type and Auto Scaling groups for microservices deployment.
+
+**Acceptance Criteria**:
+- [ ] ECS cluster created (ecommerce-cluster)
+- [ ] EC2 Auto Scaling group configured (t3.micro instances, free tier)
+- [ ] Minimum 2 instances (for HA), maximum 5
+- [ ] Target tracking scaling policy (CPU 70%)
+- [ ] Memory-based scaling (70% threshold)
+- [ ] CloudWatch monitoring enabled
+- [ ] Container insights enabled
+- [ ] Capacity providers configured
+- [ ] Task placement strategies defined
+- [ ] ECS optimized AMI used
+- [ ] SSH access configured (bastion host)
+- [ ] Security groups configured
+- [ ] IAM roles for ECS tasks
+- [ ] Log routing to CloudWatch
+- [ ] Service auto-recovery enabled
+
+**Technical Details**:
+```
+ECS Cluster:
+- Name: ecommerce-cluster
+- Launch Type: EC2
+- Container Insights: Enabled
+- Instances: t3.micro (free tier eligible, burstable)
+- ASG: Min 2, Max 5 instances
+- Scaling Policy: CPU target 70%
+- Log Driver: awslogs to CloudWatch
+```
+
+**Subtasks**:
+1. Create ECS cluster
+2. Create Auto Scaling group with t3.micro instances
+3. Configure launch templates
+4. Setup capacity providers
+5. Configure scaling policies (CPU, memory)
+6. Setup CloudWatch monitoring
+7. Enable Container Insights
+8. Configure log routing
+9. Create IAM task roles
+10. Setup service auto-recovery
+11. Test scaling policies
+12. Document ECS architecture
+
+**Dependencies**: STORY-11.1.1, STORY-11.1.2, STORY-11.2.1
+
+---
+
+### STORY-11.2.3: Deploy Microservices to ECS with Service Discovery
+**Story Points**: 12  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps / Backend  
+**Sprint**: Sprint 22-23  
+
+**Description**:
+Create ECS task definitions and services for all microservices with service discovery via ECS Service Discovery.
+
+**Acceptance Criteria**:
+- [ ] Task definitions created for all 11 services
+- [ ] Environment variables configured via task definition
+- [ ] Secrets managed via AWS Secrets Manager
+- [ ] CPU/Memory reservations configured (optimized for t3.micro)
+- [ ] ECS services created with desired count 2 (HA)
+- [ ] Service discovery namespaces configured
+- [ ] Load balancing configured (ALB target groups)
+- [ ] Auto-restart on failure enabled
+- [ ] Deployment strategy: Rolling updates
+- [ ] Health checks configured
+- [ ] Log routing to CloudWatch
+- [ ] Container-to-host port mapping
+- [ ] Secrets injection from AWS Secrets Manager
+- [ ] Database connection pooling optimized
+- [ ] All services deployed and healthy
+
+**Technical Details**:
+```
+Task Definition:
+- Family: {service-name}
+- Container Port: Service-specific (8081-8091)
+- Host Port: Same (dynamic port mapping optional)
+- CPU: 256 (burstable)
+- Memory: 512 MB (adjust per service)
+- Log Driver: awslogs
+- Environment: Via task definition
+- Secrets: Via Secrets Manager
+- Health Check: HTTP endpoint every 30 seconds
+```
+
+**Subtasks**:
+1. Create task definition templates
+2. Configure environment variables
+3. Setup Secrets Manager for sensitive data
+4. Create task definitions for all 11 services
+5. Create ECS services
+6. Configure service discovery
+7. Setup load balancer target groups
+8. Configure health checks
+9. Setup log routing
+10. Deploy all services to ECS
+11. Verify service health and connectivity
+12. Test inter-service communication
+13. Document service deployment procedures
+
+**Dependencies**: STORY-11.2.1, STORY-11.2.2
+
+---
+
+## EPIC-11.3: Load Balancing, Auto Scaling & CDN
+**Epic Story Points: 25 SP**
+
+---
+
+### STORY-11.3.1: Setup Application Load Balancer (ALB) with Target Groups
+**Story Points**: 10  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 23  
+
+**Description**:
+Create ALB for routing traffic to microservices with path-based and hostname-based routing.
+
+**Acceptance Criteria**:
+- [ ] ALB created in public subnets (Multi-AZ)
+- [ ] Listener on port 80 (HTTP)
+- [ ] Listener on port 443 (HTTPS - configured in next story)
+- [ ] Target groups created for each service
+- [ ] Path-based routing rules configured
+  - /v1/users/* -> user-service
+  - /v1/products/* -> product-service
+  - /v1/orders/* -> order-service
+  - etc.
+- [ ] Host-based routing for subdomains (optional)
+- [ ] Health checks configured (30 sec, healthy threshold 2)
+- [ ] Stickiness disabled (stateless services)
+- [ ] Cross-zone load balancing enabled
+- [ ] CloudWatch monitoring enabled
+- [ ] Access logs enabled
+- [ ] HTTP to HTTPS redirect (after HTTPS setup)
+- [ ] WAF rules attached (optional, future phase)
+
+**Technical Details**:
+```
+ALB Configuration:
+- Subnets: Public subnets (Multi-AZ)
+- Security Group: Allow 80, 443
+- Listeners: 80, 443
+- Target Type: IP (for ECS tasks)
+- Health Check: /actuator/health
+- Protocol: HTTP internally, HTTPS externally
+- Path Rules: Based on API Gateway routing
+```
+
+**Subtasks**:
+1. Create ALB in public subnets
+2. Configure security groups for ALB
+3. Create target groups for each service
+4. Configure path-based routing rules
+5. Setup health checks
+6. Configure sticky sessions (if needed)
+7. Enable cross-zone load balancing
+8. Setup access logging
+9. Create CloudWatch alarms
+10. Test routing rules
+11. Test failover behavior
+12. Document ALB configuration
+
+**Dependencies**: STORY-11.1.2, STORY-11.2.3
+
+---
+
+### STORY-11.3.2: Setup HTTPS/TLS with AWS Certificate Manager (ACM)
+**Story Points**: 8  
+**Priority**: CRITICAL  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 23  
+
+**Description**:
+Configure HTTPS/TLS certificates via AWS Certificate Manager and setup secure communication.
+
+**Acceptance Criteria**:
+- [ ] Domain name registered (or existing domain)
+- [ ] ACM certificate requested for domain
+- [ ] DNS validation completed
+- [ ] Certificate attached to ALB listener (port 443)
+- [ ] HTTPS listener created with SSL policy
+- [ ] HTTP to HTTPS redirect configured
+- [ ] Security headers configured (HSTS, X-Frame-Options, etc.)
+- [ ] TLS 1.2+ enforced
+- [ ] Certificate auto-renewal enabled
+- [ ] Cipher suites optimized
+- [ ] CloudWatch alarms for certificate expiration
+- [ ] All services behind HTTPS
+- [ ] SSL/TLS testing passed (A+ rating on SSL Labs)
+
+**Technical Details**:
+```
+ACM Configuration:
+- Domain: yourdomain.com
+- Validation: DNS (CNAME)
+- Auto-renewal: Enabled
+- TLS Version: 1.2 and 1.3
+- ALB Listener: 443
+- Redirect: HTTP (80) -> HTTPS (443)
+- Security Headers: HSTS, X-Frame-Options, X-Content-Type-Options
+```
+
+**Subtasks**:
+1. Register domain (Route 53 or external)
+2. Request ACM certificate
+3. Complete DNS validation
+4. Create ALB HTTPS listener
+5. Attach ACM certificate
+6. Configure HTTP to HTTPS redirect
+7. Configure security headers in ALB
+8. Enable TLS 1.2+ only
+9. Configure cipher suites
+10. Setup certificate expiration alarms
+11. Test HTTPS access
+12. Verify SSL/TLS configuration
+
+**Dependencies**: STORY-11.3.1
+
+---
+
+### STORY-11.3.3: Setup CloudFront CDN for Static Content & Images
+**Story Points**: 7  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 23  
+
+**Description**:
+Create CloudFront distribution for caching product images and static assets globally.
+
+**Acceptance Criteria**:
+- [ ] CloudFront distribution created
+- [ ] Origin: S3 bucket for images (origin access identity)
+- [ ] Origin: ALB for dynamic content (separate behavior)
+- [ ] Cache behaviors configured
+  - /images/* -> S3 origin, 1 year TTL
+  - /static/* -> S3 origin, 1 year TTL
+  - /v1/* -> ALB origin, 0 TTL (no cache)
+- [ ] Compression enabled (gzip, brotli)
+- [ ] Custom headers added (cache control, security)
+- [ ] Geo-blocking configured (optional)
+- [ ] SSL/TLS certificate attached
+- [ ] HTTP/2 enabled
+- [ ] IPv6 support enabled
+- [ ] Query strings handled correctly
+- [ ] Cache invalidation strategy defined
+- [ ] CloudWatch monitoring
+- [ ] Access logs enabled
+- [ ] Origin Shield enabled (optional for extra caching layer)
+
+**Technical Details**:
+```
+CloudFront Configuration:
+- Primary Origin: ALB (dynamic APIs)
+- Secondary Origin: S3 (images, static)
+- Cache Behaviors:
+  - /images/* -> S3, 31536000s (1 year)
+  - /static/* -> S3, 31536000s (1 year)
+  - /v1/* -> ALB, 0s (no cache)
+- Compression: Enabled
+- Protocol: HTTPS only
+- HTTP Version: HTTP/2 and HTTP/3
+- Origin Shield: Optional for better caching
+```
+
+**Subtasks**:
+1. Create CloudFront distribution
+2. Configure S3 origin with OAI
+3. Configure ALB origin
+4. Setup cache behaviors
+5. Enable compression
+6. Configure custom headers
+7. Setup SSL/TLS
+8. Enable HTTP/2 and HTTP/3
+9. Configure cache invalidation
+10. Setup CloudWatch monitoring
+11. Enable access logs
+12. Test CDN caching
+13. Test geo-distribution (optional)
+
+**Dependencies**: STORY-11.1.4, STORY-11.3.1, STORY-11.3.2
+
+---
+
+## EPIC-11.4: Auto Scaling, Monitoring & DNS
+**Epic Story Points: 20 SP**
+
+---
+
+### STORY-11.4.1: Setup Auto Scaling Policies & CloudWatch Alarms
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 24  
+
+**Description**:
+Configure auto-scaling based on CPU/memory metrics and setup comprehensive CloudWatch alarms.
+
+**Acceptance Criteria**:
+- [ ] Target tracking scaling policy for CPU (70% target)
+- [ ] Target tracking scaling policy for memory (80% target)
+- [ ] Step scaling policy for rapid load increases
+- [ ] Cooldown periods configured (300 seconds)
+- [ ] Scale-out happens within 2 minutes
+- [ ] Scale-in happens after 10 minutes (to prevent flapping)
+- [ ] CloudWatch alarms for high CPU
+- [ ] CloudWatch alarms for high memory
+- [ ] CloudWatch alarms for service failures
+- [ ] CloudWatch alarms for ALB target health
+- [ ] CloudWatch alarms for database connections
+- [ ] SNS notifications for scaling events
+- [ ] Metrics dashboard created
+- [ ] Custom metrics from applications
+- [ ] Scaling tested with load test
+
+**Technical Details**:
+```
+Scaling Configuration:
+- Target CPU: 70%
+- Target Memory: 80%
+- Min Instances: 2
+- Max Instances: 5
+- Scale-out Threshold: 70% for 1 minute
+- Scale-in Threshold: 30% for 5 minutes
+- Cool-down: 300 seconds
+- Metrics: Per-service CPU, memory, request count
+```
+
+**Subtasks**:
+1. Create target tracking scaling policies
+2. Create step scaling policies for rapid load
+3. Configure cooldown periods
+4. Create CloudWatch alarms for metrics
+5. Configure SNS notifications
+6. Create custom metrics from applications
+7. Setup metrics dashboard
+8. Configure log group retention
+9. Test scaling behavior
+10. Load test and observe scaling
+11. Tune scaling thresholds
+12. Document scaling configuration
+
+**Dependencies**: STORY-11.2.2, STORY-11.2.3
+
+---
+
+### STORY-11.4.2: Setup Route 53 DNS, Health Checks & Failover
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 24  
+
+**Description**:
+Configure Route 53 for domain management, health checks, and failover routing.
+
+**Acceptance Criteria**:
+- [ ] Hosted zone created in Route 53 for domain
+- [ ] A record created for main domain (points to CloudFront or ALB)
+- [ ] CNAME records for subdomains (api.domain.com, etc.)
+- [ ] Health checks configured for endpoints
+- [ ] Failover routing (primary/secondary ALBs - optional for multi-region)
+- [ ] Weighted routing policy (optional, for canary deployments)
+- [ ] Geolocation routing (optional, route by country)
+- [ ] Latency-based routing (optional, multi-region)
+- [ ] Health check alarms in CloudWatch
+- [ ] TTL configured (300 seconds for faster failover)
+- [ ] DNSSEC enabled (optional)
+- [ ] CloudTrail logging for DNS changes
+- [ ] DNS query logging enabled
+- [ ] DNS failover tested
+
+**Technical Details**:
+```
+Route 53 Configuration:
+- Hosted Zone: yourdomain.com
+- A Record: domain.com -> CloudFront distribution
+- Health Check: HTTP GET /actuator/health on ALB
+- Health Check Interval: 30 seconds
+- Failure Threshold: 3 consecutive failures
+- TTL: 300 seconds
+- Routing Policy: Simple (or Failover for HA)
+```
+
+**Subtasks**:
+1. Create/migrate hosted zone to Route 53
+2. Create A record for main domain
+3. Create CNAME records for subdomains
+4. Configure health checks
+5. Setup CloudWatch alarms for health checks
+6. Configure DNS failover (if needed)
+7. Test DNS resolution
+8. Test health check failover
+9. Configure DNS logging
+10. Enable DNSSEC (optional)
+11. Test DNS recovery
+12. Document DNS configuration
+
+**Dependencies**: STORY-11.3.2
+
+---
+
+## EPIC-11.5: Secrets, Monitoring & Logging
+**Epic Story Points: 20 SP**
+
+---
+
+### STORY-11.5.1: Setup AWS Secrets Manager for Configuration & Credentials
+**Story Points**: 8  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 24  
+
+**Description**:
+Centralize secrets management using AWS Secrets Manager for database credentials, API keys, and sensitive configuration.
+
+**Acceptance Criteria**:
+- [ ] RDS master password stored in Secrets Manager
+- [ ] API keys and tokens stored securely
+- [ ] Database connection strings stored
+- [ ] JWT secrets stored
+- [ ] Third-party service credentials stored
+- [ ] Secret rotation policies configured
+- [ ] IAM policies for secret access
+- [ ] Encryption with KMS (customer-managed key)
+- [ ] Audit logging via CloudTrail
+- [ ] Secrets Manager API integrated in application
+- [ ] Spring Cloud integration (optional)
+- [ ] Automated secret rotation for RDS (optional)
+- [ ] Secrets tagged for organization
+- [ ] Backup and recovery procedures documented
+
+**Technical Details**:
+```
+Secrets Manager:
+- Database Credentials: Auto-rotate every 30 days
+- API Keys: Rotate manually or via webhook
+- JWT Secrets: Store as SecretString
+- KMS Key: Customer-managed key for encryption
+- IAM Policy: Allow ECS task role to read secrets
+```
+
+**Subtasks**:
+1. Create customer-managed KMS key
+2. Store RDS credentials in Secrets Manager
+3. Store API keys and tokens
+4. Store database connection strings
+5. Create IAM policies for access
+6. Configure automatic rotation (RDS)
+7. Setup CloudTrail logging
+8. Integrate with ECS task definitions
+9. Create rotation Lambda functions (if custom)
+10. Test secret access from applications
+11. Test rotation process
+12. Document secrets management procedures
+
+**Dependencies**: STORY-11.1.1, STORY-11.1.3
+
+---
+
+### STORY-11.5.2: Setup CloudWatch Logs, Monitoring & Alarms
+**Story Points**: 12  
+**Priority**: HIGH  
+**Assignee Type**: DevOps  
+**Sprint**: Sprint 24-25  
+
+**Description**:
+Configure comprehensive CloudWatch logging, metrics, and alarms for all AWS resources.
+
+**Acceptance Criteria**:
+- [ ] CloudWatch log groups created for each service
+- [ ] Log retention configured (30 days for debug, 7 days for verbose)
+- [ ] RDS logs enabled and streamed to CloudWatch
+- [ ] ALB access logs sent to S3
+- [ ] VPC Flow Logs enabled
+- [ ] Application logs streamed via ECS
+- [ ] Custom metrics published from applications
+- [ ] CloudWatch dashboards created
+- [ ] Alarms for critical metrics
+  - High CPU (>80%)
+  - High memory (>85%)
+  - RDS CPU (>70%)
+  - RDS connections (>80% of max)
+  - ALB target health (unhealthy targets)
+  - Error rates in logs (>1% of requests)
+  - Application exception logs
+- [ ] SNS topics for alarm notifications
+- [ ] Email alerts configured
+- [ ] Slack integration (optional)
+- [ ] Log insights queries created
+- [ ] Cost monitoring alarms
+
+**Technical Details**:
+```
+CloudWatch Configuration:
+- Log Groups: /ecs/{service-name}, /rds/{db-instance}
+- Log Retention: 30 days (apps), 7 days (verbose)
+- Metrics: CPU, Memory, NetworkIn/Out, DiskReadOps
+- Custom Metrics: Request count, error count, latency
+- Dashboards: Per-service, per-tier, overall system
+- Alarms: SNS topics for notifications
+- Log Insights: Query language for analysis
+```
+
+**Subtasks**:
+1. Create CloudWatch log groups
+2. Configure log retention policies
+3. Enable RDS logging
+4. Enable VPC Flow Logs
+5. Configure ALB access logs to S3
+6. Stream ECS logs to CloudWatch
+7. Create CloudWatch dashboards
+8. Create metric alarms
+9. Configure SNS topics
+10. Setup email notifications
+11. Create Log Insights queries
+12. Setup cost monitoring
+13. Test alarms and notifications
+14. Document monitoring procedures
+
+**Dependencies**: STORY-11.2.2, STORY-11.2.3, STORY-11.3.1
+
+---
+
+# PHASE 12: REACT UI DEVELOPMENT WITH TYPESCRIPT (Weeks 27-33)
+**Total Story Points: 155 SP**
+**Priority: HIGH**
+**Tech Stack: React 18, TypeScript, Vite, Redux Toolkit, React Query, Tailwind CSS**
+
+---
+
+## EPIC-12.1: Project Setup & Foundation
+**Epic Story Points: 25 SP**
+
+---
+
+### STORY-12.1.1: Setup React + TypeScript Project with Vite
+**Story Points**: 8  
+**Priority**: CRITICAL  
+**Assignee Type**: Frontend Lead / Senior Developer  
+**Sprint**: Sprint 27  
+
+**Description**:
+Create React 18 project with TypeScript, Vite, and essential development tools.
+
+**Acceptance Criteria**:
+- [ ] Vite project created with React 18 template
+- [ ] TypeScript configured with strict mode
+- [ ] ESLint configured for TypeScript
+- [ ] Prettier configured for code formatting
+- [ ] Husky and lint-staged for pre-commit hooks
+- [ ] .gitignore configured
+- [ ] Environment variables setup (.env files)
+- [ ] Development and production builds working
+- [ ] Hot module replacement (HMR) functional
+- [ ] Build optimization configured
+- [ ] Source maps configured for debugging
+- [ ] Project structure organized (src/components, src/pages, src/hooks, etc.)
+- [ ] README with setup instructions
+
+**Technical Details**:
+```
+Project Structure:
+src/
+  components/     # Reusable components
+  pages/          # Page components
+  hooks/          # Custom hooks
+  services/       # API services
+  store/          # Redux state management
+  types/          # TypeScript types
+  utils/          # Utility functions
+  styles/         # Tailwind CSS config
+  App.tsx
+  main.tsx
+```
+
+**Subtasks**:
+1. Initialize Vite React project
+2. Install and configure TypeScript
+3. Setup ESLint
+4. Setup Prettier
+5. Configure Husky pre-commit hooks
+6. Setup project structure
+7. Configure environment variables
+8. Test build process
+9. Configure source maps
+10. Setup development workflow documentation
+11. Create .env.example file
+12. Test HMR functionality
+
+**Dependencies**: None
+
+---
+
+### STORY-12.1.2: Setup Tailwind CSS for Styling
+**Story Points**: 5  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 27  
+
+**Description**:
+Configure Tailwind CSS for utility-first styling and responsive design.
+
+**Acceptance Criteria**:
+- [ ] Tailwind CSS installed and configured
+- [ ] PostCSS configured
+- [ ] Tailwind config file customized (colors, fonts, breakpoints)
+- [ ] Custom utility classes defined
+- [ ] CSS reset applied
+- [ ] Dark mode support configured (optional)
+- [ ] Responsive breakpoints defined (mobile-first)
+- [ ] Component-scoped styles using @apply (if needed)
+- [ ] PurgeCSS/content path configured for production
+- [ ] Build file size optimized
+
+**Technical Details**:
+```
+Tailwind Configuration:
+- Theme customization: colors, fonts, spacing
+- Breakpoints: sm, md, lg, xl, 2xl
+- Dark Mode: Class or media query strategy
+- Plugins: Forms, typography (optional)
+- Content: src/**/*.{js,jsx,ts,tsx}
+```
+
+**Subtasks**:
+1. Install Tailwind CSS
+2. Configure PostCSS
+3. Create tailwind.config.ts
+4. Customize theme
+5. Setup responsive breakpoints
+6. Configure dark mode (optional)
+7. Create global styles
+8. Test utility classes
+9. Verify PurgeCSS working
+10. Optimize build size
+
+**Dependencies**: STORY-12.1.1
+
+---
+
+### STORY-12.1.3: Setup Redux Toolkit for State Management
+**Story Points**: 8  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Senior Developer  
+**Sprint**: Sprint 27  
+
+**Description**:
+Configure Redux Toolkit with Thunk middleware for efficient state management.
+
+**Acceptance Criteria**:
+- [ ] Redux Toolkit installed
+- [ ] Redux DevTools configured
+- [ ] Store setup with slices pattern
+- [ ] Authentication slice created
+- [ ] User profile slice created
+- [ ] Async thunks configured
+- [ ] Middleware configured (Thunk pre-installed)
+- [ ] Type-safe selectors created
+- [ ] Redux persist configured (optional)
+- [ ] Redux RTK Query configured (optional, for API caching)
+- [ ] Slice tests created
+- [ ] Store structure documented
+
+**Technical Details**:
+```
+Redux Structure:
+- authSlice: login, logout, register, auth state
+- userSlice: user profile, preferences
+- cartSlice: shopping cart items, totals
+- orderSlice: orders list, current order
+- notificationSlice: UI notifications
+- configSlice: app configuration
+Middleware: Thunk, Logger (dev only)
+DevTools: Browser extension for debugging
+```
+
+**Subtasks**:
+1. Install Redux Toolkit and React-Redux
+2. Setup Redux store
+3. Configure Redux DevTools
+4. Create authentication slice
+5. Create user profile slice
+6. Create async thunks for API calls
+7. Create selectors
+8. Setup middleware
+9. Configure Redux persist (optional)
+10. Create slice reducer tests
+11. Test store functionality
+12. Document store structure
+
+**Dependencies**: STORY-12.1.1
+
+---
+
+### STORY-12.1.4: Setup React Router with Type-Safe Routes
+**Story Points**: 4  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 27  
+
+**Description**:
+Configure React Router v6 with TypeScript for type-safe navigation and routing.
+
+**Acceptance Criteria**:
+- [ ] React Router v6 installed
+- [ ] Route structure defined
+- [ ] Protected routes implemented
+- [ ] Lazy loading of page components
+- [ ] Type-safe route parameters
+- [ ] Navigation guards configured
+- [ ] 404 error page
+- [ ] Breadcrumb navigation (optional)
+- [ ] Route metadata (titles, descriptions)
+- [ ] Query parameters handled
+
+**Technical Details**:
+```
+Route Structure:
+- / (Home)
+- /login
+- /register
+- /products
+- /products/:productId
+- /cart
+- /checkout
+- /orders
+- /orders/:orderId
+- /account/profile
+- /admin/* (protected)
+```
+
+**Subtasks**:
+1. Install React Router v6
+2. Define route configuration
+3. Create route types
+4. Setup lazy loading
+5. Create protected route component
+6. Implement route guards
+7. Create error boundary pages
+8. Configure query parameters
+9. Test routing functionality
+10. Create navigation utilities
+
+**Dependencies**: STORY-12.1.1
+
+---
+
+## EPIC-12.2: Core Components & Pages
+**Epic Story Points: 40 SP**
+
+---
+
+### STORY-12.2.1: Create Reusable UI Components Library
+**Story Points**: 15  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 28  
+
+**Description**:
+Build foundational reusable components (Button, Input, Card, Modal, etc.) with TypeScript.
+
+**Acceptance Criteria**:
+- [ ] Button component (variants: primary, secondary, danger)
+- [ ] Input component (text, email, password)
+- [ ] TextArea component
+- [ ] Select/Dropdown component
+- [ ] Card component
+- [ ] Modal/Dialog component
+- [ ] Toast/Alert notifications component
+- [ ] Loading spinner component
+- [ ] Pagination component
+- [ ] Table component with sorting
+- [ ] Link component (routing-aware)
+- [ ] Image component with lazy loading
+- [ ] Badge component
+- [ ] Tooltip component
+- [ ] Components documented with Storybook (optional)
+- [ ] 100% TypeScript with strict types
+- [ ] Accessibility (a11y) compliant
+- [ ] Unit tests for each component (>80% coverage)
+- [ ] Props documentation
+
+**Technical Details**:
+```
+Components Library:
+- Form Components: Input, TextArea, Select, Checkbox, Radio
+- Feedback: Toast, Alert, Loading, Skeleton
+- Navigation: Link, Breadcrumb, Pagination
+- Layout: Card, Container, Stack, Grid
+- Display: Badge, Avatar, Image, Icon
+- Overlay: Modal, Dropdown, Tooltip, Popover
+Props: Fully typed with TypeScript interfaces
+Accessibility: ARIA labels, keyboard navigation
+```
+
+**Subtasks**:
+1. Create components directory structure
+2. Create Button component with variants
+3. Create form input components
+4. Create card and layout components
+5. Create modal component
+6. Create notification/toast component
+7. Create table component
+8. Create pagination component
+9. Create image component with lazy loading
+10. Create badge and avatar components
+11. Add TypeScript types for all components
+12. Add accessibility attributes
+13. Create component tests (Jest + React Testing Library)
+14. Document components
+15. Setup Storybook (optional)
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2
+
+---
+
+### STORY-12.2.2: Create Authentication Pages (Login, Register, Forgot Password)
+**Story Points**: 12  
+**Priority**: CRITICAL  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 28  
+
+**Description**:
+Implement authentication UI pages with form validation and error handling.
+
+**Acceptance Criteria**:
+- [ ] Login page created with email and password fields
+- [ ] Register page created with email, password, confirm password
+- [ ] Forgot password page with email recovery
+- [ ] Password reset page with new password entry
+- [ ] Form validation (client-side) with error messages
+- [ ] Loading states during submission
+- [ ] Error message display (from API)
+- [ ] Success notifications
+- [ ] Remember me option (optional)
+- [ ] OAuth integration UI (Google, GitHub - optional)
+- [ ] Link to registration from login
+- [ ] Link to forgot password from login
+- [ ] Responsive design (mobile, tablet, desktop)
+- [ ] Accessibility compliant
+- [ ] Integration with Redux auth slice
+- [ ] Unit and integration tests
+- [ ] Storybook stories (optional)
+
+**Technical Details**:
+```
+Pages:
+- /login - LoginPage component
+- /register - RegisterPage component
+- /forgot-password - ForgotPasswordPage
+- /reset-password/:token - ResetPasswordPage
+
+Forms:
+- Client-side validation (Zod or Yup)
+- API error handling
+- Loading states
+- Success messages
+- TypeScript form types
+```
+
+**Subtasks**:
+1. Create LoginPage component
+2. Create login form with validation
+3. Create RegisterPage component
+4. Create register form
+5. Create ForgotPasswordPage
+6. Create ResetPasswordPage
+7. Add form validation library (Zod/Yup)
+8. Implement error handling
+9. Implement loading states
+10. Add success notifications
+11. Integrate with Redux auth
+12. Create tests for pages
+13. Responsive styling
+14. Accessibility review
+15. Add error logging
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.1.3, STORY-12.2.1
+
+---
+
+### STORY-12.2.3: Create Product Listing & Details Pages
+**Story Points**: 13  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 28-29  
+
+**Description**:
+Build product catalog pages with search, filtering, and detailed product view.
+
+**Acceptance Criteria**:
+- [ ] Products listing page created
+- [ ] Product cards displaying image, name, price, rating
+- [ ] Search functionality
+- [ ] Filtering by category
+- [ ] Filtering by price range
+- [ ] Sorting (by price, rating, newest)
+- [ ] Pagination implemented
+- [ ] Responsive grid layout (1-4 columns)
+- [ ] Product detail page
+- [ ] Product images gallery
+- [ ] Product description, specifications
+- [ ] Price and availability display
+- [ ] Quantity selector
+- [ ] Add to cart button
+- [ ] Related products suggestion
+- [ ] Product reviews section
+- [ ] Loading skeletons
+- [ ] Error handling
+- [ ] SEO metadata
+- [ ] Integration with Redux and API calls
+- [ ] Tests for components
+
+**Technical Details**:
+```
+Pages:
+- /products - ProductListPage
+- /products/:productId - ProductDetailPage
+
+Features:
+- Search: API call with debounce
+- Filters: Category, price, rating
+- Sorting: Multiple sort options
+- Pagination: Page size 12-24 items
+- Images: Lazy loading with CloudFront CDN
+- Reviews: Inline rendering of reviews
+```
+
+**Subtasks**:
+1. Create ProductListPage component
+2. Create ProductCard component
+3. Implement search with debounce
+4. Implement filter sidebar
+5. Implement sort dropdown
+6. Implement pagination
+7. Create ProductDetailPage component
+8. Create product images gallery
+9. Create product specifications section
+10. Create reviews section
+11. Add to cart button integration
+12. Related products recommendation
+13. Loading and error states
+14. Responsive layout
+15. Integration with API services
+16. Create tests
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1
+
+---
+
+## EPIC-12.3: Shopping & Order Pages
+**Epic Story Points: 35 SP**
+
+---
+
+### STORY-12.3.1: Create Shopping Cart Page
+**Story Points**: 10  
+**Priority**: CRITICAL  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 29  
+
+**Description**:
+Build shopping cart page with add/remove items, quantity update, and checkout flow.
+
+**Acceptance Criteria**:
+- [ ] Cart page displays all items
+- [ ] Item card shows product image, name, price, quantity
+- [ ] Quantity update buttons (+ and -)
+- [ ] Remove item button
+- [ ] Cart totals calculation (subtotal, tax, shipping estimate)
+- [ ] Empty cart message with shop link
+- [ ] Continue shopping link
+- [ ] Proceed to checkout button
+- [ ] Apply coupon code (optional)
+- [ ] Save for later (optional)
+- [ ] Responsive design
+- [ ] Integration with Redux cart slice
+- [ ] Integration with API (cart operations)
+- [ ] Loading states
+- [ ] Error handling
+- [ ] Unit and integration tests
+- [ ] Accessibility compliant
+
+**Technical Details**:
+```
+Cart Page:
+- Display items from Redux store
+- Update quantity via API + Redux
+- Remove item via API + Redux
+- Calculate totals: subtotal, tax (10%), shipping
+- Session persistence (localStorage or server)
+- Update on every item change
+```
+
+**Subtasks**:
+1. Create ShoppingCartPage component
+2. Create CartItem component
+3. Implement quantity update
+4. Implement item removal
+5. Create cart totals section
+6. Implement totals calculation
+7. Create empty cart view
+8. Add continue shopping link
+9. Add proceed to checkout button
+10. Integrate with Redux
+11. Integrate with cart API
+12. Add loading states
+13. Responsive layout
+14. Tests
+15. Accessibility review
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1, STORY-12.1.3
+
+---
+
+### STORY-12.3.2: Create Checkout & Order Confirmation Pages
+**Story Points**: 15  
+**Priority**: CRITICAL  
+**Assignee Type**: Frontend Senior Developer  
+**Sprint**: Sprint 29-30  
+
+**Description**:
+Build multi-step checkout flow with shipping, billing, and payment pages.
+
+**Acceptance Criteria**:
+- [ ] Checkout flow (4 steps): Cart Review, Shipping, Payment, Confirmation
+- [ ] Step indicator showing current step
+- [ ] Cart review step displays items and totals
+- [ ] Shipping address form (address, city, postal code, country)
+- [ ] Shipping method selection with cost
+- [ ] Billing address option (same as shipping or different)
+- [ ] Payment method form (card details)
+- [ ] Order review before final submission
+- [ ] Form validation on each step
+- [ ] Error handling and display
+- [ ] Loading states during submission
+- [ ] Order confirmation page
+- [ ] Order number and details displayed
+- [ ] Download invoice (optional)
+- [ ] Track order button
+- [ ] Email receipt sent (simulated)
+- [ ] Responsive design (mobile optimized)
+- [ ] Accessibility compliant
+- [ ] Integration with Redux
+- [ ] Integration with Order API
+- [ ] Tests for pages
+
+**Technical Details**:
+```
+Checkout Flow:
+1. Review: Display cart items
+2. Shipping: Address form + method selection
+3. Payment: Card form (no PCI - backend handles)
+4. Confirmation: Order summary
+
+State Management:
+- Redux: Checkout step, form data, order details
+- Form Validation: Zod/Yup schemas
+- Error Handling: API error messages displayed
+```
+
+**Subtasks**:
+1. Create CheckoutPage wrapper
+2. Create cart review step
+3. Create shipping address form
+4. Create shipping method selection
+5. Create payment form component
+6. Create order review step
+7. Implement step navigation (next/previous)
+8. Add form validation
+9. Implement error handling
+10. Create OrderConfirmationPage
+11. Implement order details display
+12. Add invoice download (optional)
+13. Integrate with API
+14. Add loading states
+15. Responsive layout
+16. Create tests
+17. Accessibility review
+18. Add email receipt (simulated)
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.3.1, STORY-12.2.1
+
+---
+
+### STORY-12.3.3: Create Order History & Tracking Pages
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 30  
+
+**Description**:
+Build order history page and order tracking/details page.
+
+**Acceptance Criteria**:
+- [ ] Order history page displays all user orders
+- [ ] Order list shows: Order #, Date, Status, Total, Action
+- [ ] Filtering by status (all, completed, processing, cancelled)
+- [ ] Sorting by date
+- [ ] Pagination
+- [ ] Click to view order details
+- [ ] Order details page shows items, totals, shipping info
+- [ ] Order status timeline with current status
+- [ ] Tracking information (tracking number, carrier, estimated delivery)
+- [ ] Download invoice
+- [ ] Return/exchange option
+- [ ] Contact seller option
+- [ ] Responsive design
+- [ ] Loading states
+- [ ] Error handling
+- [ ] Integration with API
+- [ ] Tests
+
+**Technical Details**:
+```
+Pages:
+- /orders - OrderHistoryPage
+- /orders/:orderId - OrderDetailsPage
+
+Features:
+- Display orders from API
+- Status timeline visualization
+- Tracking info integration
+- Invoice generation (PDF)
+- Status-based actions (cancel, return)
+```
+
+**Subtasks**:
+1. Create OrderHistoryPage component
+2. Create OrderCard component
+3. Implement filter by status
+4. Implement sorting
+5. Implement pagination
+6. Create OrderDetailsPage component
+7. Create status timeline component
+8. Display tracking information
+9. Add invoice download
+10. Add return/exchange form
+11. Add contact seller button
+12. Integrate with API
+13. Add loading states
+14. Responsive layout
+15. Tests
+16. Accessibility review
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1
+
+---
+
+## EPIC-12.4: User Account & Services Integration
+**Epic Story Points: 30 SP**
+
+---
+
+### STORY-12.4.1: Create User Profile & Account Pages
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 30  
+
+**Description**:
+Build user profile, account settings, and address management pages.
+
+**Acceptance Criteria**:
+- [ ] User profile page displays personal info
+- [ ] Edit profile form (name, email, phone)
+- [ ] Change password form
+- [ ] Profile picture upload (to S3)
+- [ ] Address management page
+- [ ] Add new address form
+- [ ] Edit address form
+- [ ] Delete address option
+- [ ] Set default address
+- [ ] Notification preferences (email, SMS, push)
+- [ ] Account security settings (2FA optional)
+- [ ] Account activity/login history (optional)
+- [ ] Delete account option (optional)
+- [ ] Form validation
+- [ ] Success messages
+- [ ] Error handling
+- [ ] Loading states
+- [ ] Responsive design
+- [ ] Integration with API
+- [ ] Tests
+
+**Technical Details**:
+```
+Pages:
+- /account/profile - ProfilePage
+- /account/addresses - AddressManagementPage
+- /account/settings - AccountSettingsPage
+
+Features:
+- Edit profile with validation
+- Change password form
+- Profile picture upload to S3
+- Address CRUD operations
+- Notification preferences
+- Security settings
+```
+
+**Subtasks**:
+1. Create ProfilePage component
+2. Create profile edit form
+3. Create change password form
+4. Implement profile picture upload
+5. Create AddressManagementPage
+6. Create address list with edit/delete
+7. Create add address form
+8. Create account settings page
+9. Create notification preferences form
+10. Add API integration
+11. Add form validation
+12. Add success/error messages
+13. Add loading states
+14. Responsive layout
+15. Tests
+16. Accessibility review
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1
+
+---
+
+### STORY-12.4.2: Create API Service Layer & React Query Integration
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Senior Developer  
+**Sprint**: Sprint 30-31  
+
+**Description**:
+Build API service layer with error handling and React Query for data fetching and caching.
+
+**Acceptance Criteria**:
+- [ ] API client setup with Axios
+- [ ] React Query (TanStack Query) configured
+- [ ] Typed API request/response interfaces
+- [ ] Error handling middleware
+- [ ] Request interceptors (JWT token injection)
+- [ ] Response interceptors (error handling, token refresh)
+- [ ] Query hooks for GET requests
+- [ ] Mutation hooks for POST/PUT/DELETE
+- [ ] Automatic retry on failure
+- [ ] Request debouncing for search
+- [ ] Pagination support
+- [ ] Optimistic updates for mutations
+- [ ] Cache invalidation strategies
+- [ ] Loading and error states
+- [ ] TypeScript types for all API endpoints
+- [ ] Tests for API service
+
+**Technical Details**:
+```
+API Service Structure:
+services/
+  api/
+    client.ts - Axios client with interceptors
+    auth.ts - Authentication API calls
+    products.ts - Product API calls
+    orders.ts - Order API calls
+    user.ts - User API calls
+    cart.ts - Cart API calls
+
+React Query:
+- useQuery for GET requests
+- useMutation for POST/PUT/DELETE
+- useInfiniteQuery for pagination
+- Custom hooks: useAuth, useUser, useProducts, etc.
+```
+
+**Subtasks**:
+1. Setup Axios client
+2. Configure React Query
+3. Create error handling middleware
+4. Create request/response interceptors
+5. Create typed API interfaces
+6. Create authentication service
+7. Create product service
+8. Create order service
+9. Create user service
+10. Create cart service
+11. Create custom React Query hooks
+12. Implement automatic retry
+13. Implement pagination support
+14. Implement cache invalidation
+15. Create tests for API service
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.3
+
+---
+
+### STORY-12.4.3: Create Reviews & Ratings Components
+**Story Points**: 10  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 31  
+
+**Description**:
+Build review submission and display components for product reviews and ratings.
+
+**Acceptance Criteria**:
+- [ ] Review list component showing all reviews
+- [ ] Rating stars display
+- [ ] Review text with formatting
+- [ ] Reviewer name and date
+- [ ] Helpful/unhelpful voting
+- [ ] Image gallery in reviews
+- [ ] Filter reviews by rating (1-5 stars)
+- [ ] Sort reviews (newest, helpful, rating)
+- [ ] Pagination for reviews
+- [ ] Review submission form
+- [ ] Star rating input (1-5)
+- [ ] Review text area with character limit
+- [ ] Image upload for reviews (optional)
+- [ ] Form validation
+- [ ] Success/error messages
+- [ ] Responsive design
+- [ ] Accessibility compliant
+- [ ] Integration with API
+- [ ] Tests
+
+**Technical Details**:
+```
+Components:
+- ReviewList - Display all reviews with filtering
+- ReviewCard - Individual review display
+- RatingStars - Star rating display
+- ReviewForm - Submit new review
+- RatingDistribution - Show rating breakdown
+
+Features:
+- Filter by rating
+- Sort options
+- Pagination
+- Helpful voting
+- Image display
+```
+
+**Subtasks**:
+1. Create ReviewList component
+2. Create ReviewCard component
+3. Create RatingStars component
+4. Implement filtering by rating
+5. Implement sorting
+6. Implement pagination
+7. Create ReviewForm component
+8. Implement star rating input
+9. Add image upload (optional)
+10. Add helpful voting
+11. Form validation
+12. API integration
+13. Success/error handling
+14. Loading states
+15. Tests
+16. Accessibility review
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1
+
+---
+
+## EPIC-12.5: Admin Features & Testing
+**Epic Story Points: 25 SP**
+
+---
+
+### STORY-12.5.1: Create Admin Dashboard & Product Management
+**Story Points**: 12  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer  
+**Sprint**: Sprint 31-32  
+
+**Description**:
+Build admin dashboard with product management, orders, and user management interfaces.
+
+**Acceptance Criteria**:
+- [ ] Admin dashboard with key metrics (total sales, orders, users)
+- [ ] Product management page
+- [ ] Add new product form
+- [ ] Edit product form
+- [ ] Delete product confirmation
+- [ ] Product images upload
+- [ ] Inventory management
+- [ ] Orders management page
+- [ ] Order status update
+- [ ] User management page
+- [ ] User list with filters
+- [ ] Role assignment
+- [ ] Revenue reports/charts (optional)
+- [ ] Sales analytics (optional)
+- [ ] Access control (admin only)
+- [ ] Responsive design
+- [ ] Integration with API
+- [ ] Tests
+
+**Technical Details**:
+```
+Admin Pages:
+- /admin - DashboardPage with metrics
+- /admin/products - ProductManagementPage
+- /admin/orders - OrderManagementPage
+- /admin/users - UserManagementPage
+- /admin/reports - ReportsPage (optional)
+
+Features:
+- CRUD for products
+- Order status updates
+- User role assignment
+- Dashboard analytics
+- Export reports
+```
+
+**Subtasks**:
+1. Create admin dashboard page
+2. Create dashboard metrics/widgets
+3. Create product management page
+4. Create product add/edit forms
+5. Create image upload component
+6. Create order management page
+7. Create status update dropdown
+8. Create user management page
+9. Create user list with filters
+10. Create role assignment form
+11. Add access control/auth checks
+12. API integration
+13. Loading states
+14. Error handling
+15. Responsive layout
+16. Tests
+17. Accessibility review
+
+**Dependencies**: STORY-12.1.1, STORY-12.1.2, STORY-12.2.1, STORY-12.4.2
+
+---
+
+### STORY-12.5.2: Testing, Optimization & Production Build
+**Story Points**: 13  
+**Priority**: HIGH  
+**Assignee Type**: Frontend Developer / QA  
+**Sprint**: Sprint 32-33  
+
+**Description**:
+Comprehensive testing, performance optimization, and production build configuration.
+
+**Acceptance Criteria**:
+- [ ] Unit tests for all components (>80% coverage)
+- [ ] Integration tests for key workflows (login, checkout)
+- [ ] E2E tests with Cypress or Playwright
+- [ ] Performance optimization (code splitting, lazy loading)
+- [ ] Bundle size analysis and optimization
+- [ ] Image optimization (WebP, responsive images)
+- [ ] Build size < 500KB (gzipped)
+- [ ] Lighthouse score > 90 (Performance, Accessibility, Best Practices, SEO)
+- [ ] PWA features (service workers, offline support - optional)
+- [ ] Security headers configured
+- [ ] Environment variables configured for production
+- [ ] Error logging configured
+- [ ] Analytics integration (optional)
+- [ ] Production build tested
+- [ ] Deployment to CloudFront configured
+- [ ] Cache busting configured
+
+**Technical Details**:
+```
+Testing:
+- Unit: Jest + React Testing Library
+- Integration: React Testing Library with API mocking
+- E2E: Cypress or Playwright against dev backend
+- Coverage: >80% overall
+
+Performance:
+- Code splitting by route
+- Lazy loading images
+- Tree shaking enabled
+- Minification and compression
+- CSS purging
+- Bundle analysis with source-map-explorer
+```
+
+**Subtasks**:
+1. Write unit tests for components
+2. Write integration tests for workflows
+3. Configure E2E tests (Cypress)
+4. Setup code coverage reporting
+5. Implement code splitting by route
+6. Implement lazy loading for images
+7. Optimize bundle size
+8. Configure image optimization
+9. Setup environment variables
+10. Configure error logging (Sentry)
+11. Setup analytics (optional)
+12. Configure security headers
+13. Setup PWA (optional)
+14. Run Lighthouse audit
+15. Optimize based on Lighthouse scores
+16. Configure production build
+17. Test production build locally
+18. Setup S3/CloudFront deployment
+19. Document deployment procedure
+
+**Dependencies**: All Phase 12 stories
+
+---
+
+## Summary
+
+## Updated Project Totals
+
+| Component | Story Points | Duration |
+|-----------|----------|----------|
+| **Backend Microservices** (Phases 1-10) | 850 SP | 20 weeks |
+| **AWS Cloud Infrastructure** (Phase 11) | 140 SP | 6 weeks |
+| **React UI with TypeScript** (Phase 12) | 155 SP | 7 weeks |
+| **TOTAL PROJECT** | **1,145 SP** | **29 weeks** |
+
+**New Sprint Structure**: 18 sprints of 2 weeks each (36 weeks calendar time with buffers)
+
+---
+
+## AWS Free Tier Resources Timeline
+
+### Year 1 (Free Tier - 12 Months):
+- **EC2**: 750 hours/month of t2.micro (or t3.micro/t4g.micro)
+- **RDS**: 750 hours/month of db.t3.micro Single-AZ
+- **S3**: 5 GB of storage (across all buckets)
+- **CloudFront**: 50 GB/month data transfer out
+- **ECS**: Container orchestration (compute resources still count)
+- **Lambda**: 1,000,000 requests/month (covered separately)
+- **CloudWatch**: Logs, Metrics, Alarms
+- **Route 53**: First hosted zone free, $0.50/month per additional zone
+- **ECR**: 500 MB/month of storage
+
+### Considerations:
+- Focus on single-AZ RDS initially (Multi-AZ in production)
+- Use t4g Graviton instances (better price/performance)
+- Monitor costs via CloudWatch alarms
+- Set budget alerts in AWS Cost Explorer
+- Clean up unused resources monthly
+
+---
+
+## Critical Success Factors
+
+### Development Team:
+- **Backend Team**: 5-6 developers
+- **Frontend Team**: 2-3 developers
+- **DevOps**: 1-2 engineers
+- **QA**: 1-2 testers
+- **Total**: 9-13 people
+
+### Dependencies & Risks:
+1. **AWS Learning Curve**: Team needs AWS certification training (optional)
+2. **Free Tier Limits**: Plan for paid resources after 12 months
+3. **API Integration**: Frontend must wait for backend API stability
+4. **Security**: AWS IAM and secrets management critical from day 1
+5. **Performance**: Continuous monitoring required from Phase 11 onward
 
 ---
 
@@ -3470,9 +5266,10 @@ Runbooks Cover:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0 | 2026-05-13 | Initial document created with complete story breakdown |
+| 1.0 | 2026-05-13 | Initial document with 10 phases, 850 SP |
+| 2.0 | 2026-05-21 | Added Phase 11 (AWS Infrastructure, 120 SP) + Phase 12 (React UI, 155 SP). Total updated to 1,325 SP, 33 weeks |
 
 ---
 
-**End of Document**
+**End of Updated Document**
 
